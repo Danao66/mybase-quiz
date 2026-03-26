@@ -326,7 +326,7 @@ export default function QuizFunnel() {
           <div className="animate-fade-in-up max-w-3xl mx-auto space-y-8 text-center">
             <h2 className="text-4xl font-extrabold tracking-tight">⚡ Bienvenue chez les bâtisseurs. Rejoignez les 100 Membres Fondateurs.</h2>
             <p className="text-gray-300 text-lg leading-relaxed">
-              À sa sortie officielle, l'abonnement MyBase PRO coûtera 50 €/mois (600 €/an). Aujourd'hui, nous ouvrons 100 Licences avec un accès <span className="text-white font-bold">PRO À VIE</span> gratuit.
+              À sa sortie officielle, l'abonnement MyBase PRO coûtera 50 €/mois (600 €/an). Aujourd'hui, nous ouvrons 100 Licences avec un accès <span className="text-white font-bold">PRO À VIE</span> pour un paiement unique de <span className="text-white font-bold">100 €</span>.
             </p>
             
             <div className="bg-gray-800 border border-emerald-500/30 rounded-2xl p-6 md:p-8 text-left space-y-4 shadow-xl shadow-emerald-900/10">
@@ -377,7 +377,7 @@ export default function QuizFunnel() {
 
               <div className="pt-4">
                 <button type="submit" className="w-full bg-emerald-500 hover:bg-emerald-400 text-gray-900 font-bold py-4 rounded-xl text-lg flex justify-center items-center transition-transform hover:scale-[1.02]">
-                  🔒 Verrouiller ma place
+                  🔒 Verrouiller ma place (100 €)
                 </button>
               </div>
             </form>
