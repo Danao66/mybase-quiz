@@ -25,11 +25,21 @@ type ScreenId =
 export default function QuizFunnel() {
   const [currentScreen, setCurrentScreen] = useState<ScreenId>("screen_1_intro");
   const [profile, setProfile] = useState<"debutant" | "experimente" | "pro" | null>(null);
+  const [history, setHistory] = useState<ScreenId[]>([]);
 
   // Transition handler
   const goTo = (screen: ScreenId) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    setHistory((prev) => [...prev, currentScreen]);
     setCurrentScreen(screen);
+  };
+
+  const goBack = () => {
+    if (history.length === 0) return;
+    const newHistory = [...history];
+    const previousScreen = newHistory.pop()!;
+    setHistory(newHistory);
+    setCurrentScreen(previousScreen);
   };
 
   const submitToNetlify = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -391,7 +401,18 @@ export default function QuizFunnel() {
   };
 
   return (
-    <div className="min-h-screen py-12 px-4 md:px-8 flex items-center justify-center">
+    <div className="min-h-screen py-10 px-4 flex flex-col items-center justify-center relative w-full">
+      {history.length > 0 && currentScreen !== "Final_Success" && (
+        <div className="absolute top-4 left-4 md:top-8 md:left-8 z-10">
+          <button
+            onClick={goBack}
+            className="text-gray-400 hover:text-white flex items-center transition-colors px-3 py-2 rounded-lg hover:bg-gray-800 text-sm md:text-base"
+          >
+            <span className="mr-2">←</span> Retour
+          </button>
+        </div>
+      )}
+
       {/* Hidden form for Netlify bots to discover */}
       <form name="mybase-quiz" data-netlify="true" hidden>
         <input type="text" name="prenom" />
@@ -401,7 +422,9 @@ export default function QuizFunnel() {
         <input type="text" name="profile" />
       </form>
 
-      {renderScreen()}
+      <div className="w-full mt-12 md:mt-0">
+        {renderScreen()}
+      </div>
     </div>
   );
 }
