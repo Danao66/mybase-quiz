@@ -19,7 +19,8 @@ type ScreenId =
   | "E2_B"
   | "E2_C"
   | "Final_1_Value_Stack"
-  | "Final_2_Checkout";
+  | "Final_2_Checkout"
+  | "Final_Success";
 
 export default function QuizFunnel() {
   const [currentScreen, setCurrentScreen] = useState<ScreenId>("screen_1_intro");
@@ -29,6 +30,25 @@ export default function QuizFunnel() {
   const goTo = (screen: ScreenId) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setCurrentScreen(screen);
+  };
+
+  const submitToNetlify = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    formData.append("form-name", "mybase-quiz");
+    if (profile) formData.append("profile", profile);
+
+    try {
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        // @ts-ignore
+        body: new URLSearchParams(formData).toString(),
+      });
+      goTo("Final_Success");
+    } catch (error) {
+      alert("Une erreur est survenue lors de l'envoi.");
+    }
   };
 
   const renderScreen = () => {
@@ -323,26 +343,26 @@ export default function QuizFunnel() {
               <p className="text-emerald-500 font-medium">100 Licences Disponibles. Accès immédiat.</p>
             </div>
             
-            <form className="bg-gray-800 p-6 md:p-8 rounded-2xl border border-gray-700 space-y-5" onSubmit={(e) => e.preventDefault()}>
+            <form className="bg-gray-800 p-6 md:p-8 rounded-2xl border border-gray-700 space-y-5" onSubmit={submitToNetlify}>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Prénom</label>
-                  <input type="text" className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="Jean" required />
+                  <input type="text" name="prenom" className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="Jean" required />
                 </div>
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Nom</label>
-                  <input type="text" className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="Dupont" required />
+                  <input type="text" name="nom" className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="Dupont" required />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm text-gray-400 mb-1">Email</label>
-                <input type="email" className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="jean.dupont@email.com" required />
+                <input type="email" name="email" className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="jean.dupont@email.com" required />
               </div>
 
               <div>
                 <label className="block text-sm text-gray-400 mb-1">Profession (Optionnel)</label>
-                <input type="text" className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="ex: Cadre, Agent, Marchand..." />
+                <input type="text" name="profession" className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors" placeholder="ex: Cadre, Agent, Marchand..." />
               </div>
 
               <div className="pt-4">
@@ -354,6 +374,17 @@ export default function QuizFunnel() {
           </div>
         );
 
+      case "Final_Success":
+        return (
+          <div className="animate-fade-in-up max-w-xl mx-auto space-y-8 text-center bg-gray-800 p-8 rounded-2xl border border-emerald-500/30">
+            <div className="text-6xl mb-4">🎉</div>
+            <h2 className="text-3xl font-bold mb-4">C'est validé !</h2>
+            <p className="text-gray-300 text-lg">
+              Votre place de Membre Fondateur a bien été verrouillée. Vous recevrez très bientôt un email avec la suite du programme.
+            </p>
+          </div>
+        );
+
       default:
         return <div>Screen not found</div>;
     }
@@ -361,6 +392,15 @@ export default function QuizFunnel() {
 
   return (
     <div className="min-h-screen py-12 px-4 md:px-8 flex items-center justify-center">
+      {/* Hidden form for Netlify bots to discover */}
+      <form name="mybase-quiz" data-netlify="true" hidden>
+        <input type="text" name="prenom" />
+        <input type="text" name="nom" />
+        <input type="email" name="email" />
+        <input type="text" name="profession" />
+        <input type="text" name="profile" />
+      </form>
+
       {renderScreen()}
     </div>
   );
