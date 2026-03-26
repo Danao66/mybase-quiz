@@ -413,15 +413,6 @@ export default function QuizFunnel() {
         </div>
       )}
 
-      {/* Hidden form for Netlify bots to discover */}
-      <form name="mybase-quiz" data-netlify="true" hidden>
-        <input type="text" name="prenom" />
-        <input type="text" name="nom" />
-        <input type="email" name="email" />
-        <input type="text" name="profession" />
-        <input type="text" name="profile" />
-      </form>
-
       <div className="w-full mt-12 md:mt-0">
         {renderScreen()}
       </div>
