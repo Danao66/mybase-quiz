@@ -377,7 +377,7 @@ export default function QuizFunnel() {
 
               <div className="pt-4">
                 <button type="submit" className="w-full bg-emerald-500 hover:bg-emerald-400 text-gray-900 font-bold py-4 rounded-xl text-lg flex justify-center items-center transition-transform hover:scale-[1.02]">
-                  🔒 Verrouiller ma place (100 €)
+                  🔒 Verrouiller ma place fondateur
                 </button>
               </div>
             </form>
